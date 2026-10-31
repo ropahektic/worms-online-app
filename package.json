@@ -1,8 +1,8 @@
 {
   "name": "worms-online",
   "productName": "Worms Online",
-  "version": "0.1.0",
-  "description": "Worms Online (ropersheaven.com) as a desktop app: the game page in its own Chromium, with no browser throttling",
+  "version": "0.1.1",
+  "description": "Worms Online (wormsonline.net) as a desktop app: the game page in its own Chromium, with no browser throttling",
   "main": "main.js",
   "private": true,
   "scripts": {

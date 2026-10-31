@@ -14,7 +14,7 @@
 </head>
 <body>
 <div class="box">
-  <h1>Can’t reach ropersheaven.com</h1>
+  <h1>Can’t reach wormsonline.net</h1>
   <p>Check your connection. The app retries on its own.</p>
   <p><code id="why"></code></p>
   <button id="retry" type="button">Try now</button>
@@ -22,7 +22,7 @@
 <script>
   const q = new URLSearchParams(location.search);
   document.getElementById('why').textContent = q.get('reason') || '';
-  const back = () => { location.href = q.get('url') || 'https://ropersheaven.com/'; };
+  const back = () => { location.href = q.get('url') || 'https://wormsonline.net/'; };
   document.getElementById('retry').addEventListener('click', back);
   setTimeout(back, 10000);
 </script>

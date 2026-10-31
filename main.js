@@ -1,5 +1,5 @@
 // Worms Online as a desktop app (user 2026-10-30): a thin shell round the live site, so every
-// player runs the same Chromium with the browser limits off. The page is ropersheaven.com's as
+// player runs the same Chromium with the browser limits off. The page is wormsonline.net's as
 // deployed: a site deploy reaches the app at once; the app only changes when this shell does.
 //
 // What the shell fixes that a browser won't let a page change:
@@ -12,9 +12,10 @@
 const { app, BrowserWindow, Menu, powerSaveBlocker, shell, session } = require('electron');
 const path = require('path');
 
-const SITE = process.env.WORMS_ONLINE_URL || 'https://ropersheaven.com/';
-// pages that stay in the app's window: the site, and the sign-in providers it sends players to
-const INSIDE = ['ropersheaven.com', 'accounts.google.com', 'discord.com', 'discordapp.com'];
+const SITE = process.env.WORMS_ONLINE_URL || 'https://wormsonline.net/';
+// pages that stay in the app's window: the site (old and new address), and the sign-in providers
+// it sends players to, so Google / Discord sign-in happens in the app and lands back in it
+const INSIDE = ['wormsonline.net', 'ropersheaven.com', 'accounts.google.com', 'accounts.youtube.com', 'discord.com', 'discordapp.com'];
 
 // before `ready`: Chromium's own switches
 app.commandLine.appendSwitch('disable-renderer-backgrounding');
