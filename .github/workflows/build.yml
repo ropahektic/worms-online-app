@@ -1,6 +1,6 @@
 # The app built for macOS (universal .dmg: Apple Silicon and Intel, ad-hoc signed) and Linux
 # (.AppImage) on GitHub's machines. Run it from the Actions tab, or push a tag v*. The installers
-# are the run's artifacts. (The Windows installer is built on the developer's PC: npm run dist:win)
+# are the run's artifacts, with what the app's updater reads (mac .zip, latest-*.yml). (The Windows installer is built on the developer's PC: npm run dist:win)
 name: build
 on:
   workflow_dispatch:
@@ -14,10 +14,15 @@ jobs:
         include:
           - os: macos-14
             cmd: dist:mac
-            out: dist/*.dmg
+            out: |
+              dist/*.dmg
+              dist/*.zip
+              dist/latest-mac.yml
           - os: ubuntu-22.04
             cmd: dist:linux
-            out: dist/*.AppImage
+            out: |
+              dist/*.AppImage
+              dist/latest-linux.yml
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4

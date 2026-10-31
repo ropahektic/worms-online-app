@@ -27,6 +27,7 @@
     "files": [
       "main.js",
       "preload.js",
+      "update.js",
       "offline.html",
       "package.json"
     ],
@@ -54,6 +55,12 @@
           "arch": [
             "universal"
           ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "universal"
+          ]
         }
       ],
       "icon": "build/icon.png",
@@ -72,6 +79,15 @@
       "icon": "build/icon.png",
       "category": "Game"
     },
-    "afterSign": "build/afterpack.js"
+    "afterSign": "build/afterpack.js",
+    "publish": [
+      {
+        "provider": "generic",
+        "url": "https://wormsonline.net/app/"
+      }
+    ]
+  },
+  "dependencies": {
+    "electron-updater": "6.3.9"
   }
 }

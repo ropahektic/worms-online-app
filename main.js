@@ -41,6 +41,7 @@ function createWindow() {
       contextIsolation: true, sandbox: true, nodeIntegration: false,
       // the game keeps running when the window isn't in front
       backgroundThrottling: false,
+      additionalArguments: [`--wo-version=${app.getVersion()}`],
     },
   });
   // (sign-in providers refuse an "Electron" browser: a plain Chrome user agent; the page knows
@@ -75,11 +76,16 @@ function createWindow() {
 // a small menu: the standard roles (quit, copy / paste in fields, zoom), hidden on Windows and
 // Linux (Alt shows it), the app menu macOS needs
 const isMac = process.platform === 'darwin';
+// (update.js: once a new version is downloaded, "Restart to update" installs it now; otherwise it
+// goes in when the app is closed)
+let updateReady = null, installUpdate = () => {};
+function setMenu() {
 Menu.setApplicationMenu(Menu.buildFromTemplate([
   ...(isMac ? [{ role: 'appMenu' }] : []),
   { label: 'Game', submenu: [
     { label: 'Reload', accelerator: 'CmdOrCtrl+R', click: () => win && win.loadURL(SITE) },
     { label: 'Fullscreen', accelerator: 'F11', click: () => win && win.setFullScreen(!win.isFullScreen()) },
+    ...(updateReady ? [{ type: 'separator' }, { label: `Restart to update (${updateReady})`, click: () => installUpdate() }] : []),
     { type: 'separator' },
     isMac ? { role: 'close' } : { role: 'quit' },
   ] },
@@ -87,6 +93,8 @@ Menu.setApplicationMenu(Menu.buildFromTemplate([
   { label: 'View', submenu: [{ role: 'resetZoom' }, { role: 'zoomIn' }, { role: 'zoomOut' }, { type: 'separator' }, { role: 'toggleDevTools' }] },
   { role: 'windowMenu' },
 ]));
+}
+setMenu();
 
 app.on('second-instance', () => { if (win) { if (win.isMinimized()) win.restore(); win.focus(); } });
 app.on('window-all-closed', () => { if (!isMac) app.quit(); });
@@ -98,5 +106,6 @@ app.whenReady().then(() => {
   // (the site's own cache as a browser keeps it; nothing else persisted but its storage)
   session.defaultSession.setPermissionRequestHandler((_wc, permission, cb) => cb(['fullscreen', 'pointerLock', 'clipboard-read'].includes(permission)));
   createWindow();
+  installUpdate = require('./update').start((v) => { updateReady = v; setMenu(); });
 });
 app.on('will-quit', () => { if (powerSaveBlocker.isStarted(blocker)) powerSaveBlocker.stop(blocker); });
